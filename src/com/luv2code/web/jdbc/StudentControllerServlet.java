@@ -16,6 +16,7 @@ import javax.sql.DataSource;
  * Servlet implementation class StudentControllerServlet
  */
 @WebServlet("/StudentControllerServlet")
+
 public class StudentControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -45,24 +46,31 @@ public class StudentControllerServlet extends HttpServlet {
 
 		// 1 list the students, in MVC fashion
 
-		listStudents(request, response);
-
-		// 2
+		try {
+			
+			
+			listStudents(request, response);
+			
+			
+			
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
 
 	}
 
 	private void listStudents(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// get students from DB Util
-		
+		// 1) get students from DB Util
+
 		List<Student> students = studentDBUtil.getStudents();
 
-		// add students to the request
-		
+		// 2) add students to the request - that will be sent to JSP view file
+
 		request.setAttribute("STUDENT_LIST", students);
 
-		// send to JSP page (view)
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/list_students.jsp");
+		// 3) send to JSP page (view)
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
 		dispatcher.forward(request, response);
 	}
 
